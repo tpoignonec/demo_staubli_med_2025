@@ -26,14 +26,14 @@ source install/setup.bash
 
 1) Install and setup docker & docker-compose
 
-2) Build Staubli driver image:
+2) Build Staubli driver base image:
 ```bash
 git clone https://github.com/tpoignonec/staubli_driver_ros2.git
 
 git checkout tpo/dockerization_for_demo_app
 
 # Build staubli_driver docker image
-docker build -t staubli_driver_ros2:jazzy .
+docker build -t staubli_driver_ros2:jazzy staubli_driver_ros2
 ```
 
 3) Build demo app image:
@@ -47,4 +47,4 @@ docker build -t staubli_jpo_demo:0.1.0 \
     demo_staubli_med_2025
 ```
 
-4) Run :)
+4) Run 😀
