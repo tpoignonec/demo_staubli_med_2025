@@ -15,15 +15,33 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 find_package(rclpy REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
+find_package(moveit_ros_planning_interface REQUIRED)
+
+# C++ executable
+add_executable(trajectory_planner_cpp src/trajectory_planner_node.cpp)
+ament_target_dependencies(trajectory_planner_cpp
+  rclcpp
+  geometry_msgs
+  tf2_geometry_msgs
+  moveit_ros_planning_interface
+)
+
+install(TARGETS
+  trajectory_planner_cpp
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
 
 # Install Python executables
 # install(PROGRAMS
-#   demo_staubli_med_2025/aruco_detector.py
+#   demo_staubli_med_2025/trajectory_planner.py
 #   DESTINATION lib/${PROJECT_NAME}
-#   RENAME aruco_detector
+#   RENAME trajectory_planner
 # )
 
 # Install launch / config files

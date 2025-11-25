@@ -33,6 +33,9 @@
 
   <exec_depend>slider_publisher</exec_depend>
   <exec_depend>moveit_ros_perception</exec_depend>
+  <exec_depend>moveit_ros_move_group</exec_depend>
+  <exec_depend>moveit_ros_planning_interface</exec_depend>
+  <exec_depend>moveit_msgs</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
