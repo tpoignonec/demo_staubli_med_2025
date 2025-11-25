@@ -32,7 +32,6 @@
   <exec_depend>staubli_moveit_config</exec_depend>
 
   <exec_depend>slider_publisher</exec_depend>
-  <exec_depend>moveit_ros_perception</exec_depend>
   <exec_depend>moveit_ros_move_group</exec_depend>
   <exec_depend>moveit_ros_planning_interface</exec_depend>
   <exec_depend>moveit_msgs</exec_depend>

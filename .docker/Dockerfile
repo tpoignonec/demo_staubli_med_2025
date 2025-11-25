@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:1
+# Build from parent directory with: docker build -t staubli_jpo_demo:0.1.0 -f .docker/Dockerfile .
 
 FROM staubli_driver_ros2:jazzy
 
@@ -10,14 +11,12 @@ COPY . /ws/src/demo_staubli_med_2025
 
 # Install dependencies
 RUN apt-get update && \
-    touch /ws/src/demo_staubli_med_2025/demo_staubli_med_2025/COLCON_IGNORE && \
     rosdep install --from-paths src --ignore-src -r -y
 
 # Build packages
 RUN . /opt/ros/jazzy/setup.sh \
     && colcon build \
     --cmake-args -DCMAKE_BUILD_TYPE=Release
-
 
 # Ensure the ROS 2 workspace is sourced in every new shell
 RUN echo "source /ws/install/setup.bash" >> /root/.bashrc
