@@ -3,17 +3,10 @@
 # Author: Thibault Poignonec <tpoignonec@unistra.fr>
 
 from launch import LaunchDescription
-from launch.actions import (
-    DeclareLaunchArgument,
-    ExecuteProcess,
-    LogInfo,
-    RegisterEventHandler,
-)
+from launch.actions import DeclareLaunchArgument
 from launch.conditions import IfCondition
-from launch.event_handlers import OnProcessExit
 from launch.substitutions import (
     Command,
-    EqualsSubstitution,
     FindExecutable,
     LaunchConfiguration,
     PathJoinSubstitution,
@@ -41,18 +34,6 @@ def generate_launch_description():
             "robot_ip",
             default_value="192.168.0.254",
             description="IP address of the robot.",
-        )
-    )
-
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "start_controller",
-            default_value="none",
-            description="Controller to start at launch. None by default.",
-            choices=[
-                "none",
-                "joint_trajectory_controller",
-            ],
         )
     )
 
@@ -121,59 +102,17 @@ def generate_launch_description():
         arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
     )
 
+    load_joint_trajectory_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_trajectory_controller", "--controller-manager", "/controller_manager"],
+    )
+
     # Load controllers
-    load_controllers = [load_joint_state_broadcaster]
-
-    # Add your controllers here
-    controllers_to_load = [
-        "joint_trajectory_controller",
+    load_controllers = [
+        load_joint_state_broadcaster,
+        load_joint_trajectory_controller,
     ]
-
-    def load_controller_cmd(controller_name: str):
-        # Spawn controller, inactive by default
-        load_node = Node(
-            package="controller_manager",
-            executable="spawner",
-            arguments=[
-                controller_name,
-                "--controller-manager",
-                "/controller_manager",
-                "--inactive",
-            ],
-        )
-        # Activate controller if specified at launch
-        activation_condition = IfCondition(
-            EqualsSubstitution(LaunchConfiguration("start_controller"), controller_name)
-        )
-        post_load_action = RegisterEventHandler(
-            OnProcessExit(
-                target_action=load_node,
-                on_exit=[
-                    LogInfo(
-                        condition=activation_condition,
-                        msg=[
-                            "\033[32mStarting controller ",
-                            controller_name,
-                            "\033[0m",
-                        ],
-                    ),
-                    ExecuteProcess(
-                        condition=activation_condition,
-                        cmd=[
-                            "ros2",
-                            "control",
-                            "set_controller_state",
-                            controller_name,
-                            "active",
-                        ],
-                    ),
-                ],
-            )
-        )
-        return [load_node, post_load_action]
-
-    for controller in controllers_to_load:
-        load_controllers += load_controller_cmd(controller)
 
     # Rviz
     rviz_config_file = PathJoinSubstitution(
