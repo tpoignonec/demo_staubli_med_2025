@@ -23,4 +23,3 @@ source install/setup.bash
 ```
 
 ## Build docker image to share with Staubli
-
