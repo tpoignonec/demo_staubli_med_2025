@@ -15,6 +15,7 @@ RUN apt-get update && \
 
 # Build packages
 RUN . /opt/ros/jazzy/setup.sh \
+    && . /opt/ros/icube/setup.sh \
     && colcon build \
     --cmake-args -DCMAKE_BUILD_TYPE=Release
 

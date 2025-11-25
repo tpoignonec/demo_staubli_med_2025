@@ -48,3 +48,9 @@ docker build -t staubli_jpo_demo:0.1.0 \
 ```
 
 4) Run 😀
+```bash
+xhost +local:docker
+
+cd demo_staubli_med_2025
+docker compose up
+```
