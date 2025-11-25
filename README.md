@@ -26,6 +26,11 @@ source install/setup.bash
 
 1) Install and setup docker & docker-compose
 
+- Follow instructions at https://docs.docker.com/engine/install/ubuntu/ to install docker
+- Don't forget the post-installation steps (see [here](https://docs.docker.com/engine/install/linux-postinstall/))
+
+
+
 2) Build Staubli driver base image:
 ```bash
 git clone https://github.com/tpoignonec/staubli_driver_ros2.git
