@@ -2,4 +2,4 @@ repositories:
   external/staubli_driver_ros2:
     type: git
     url: https://github.com/tpoignonec/staubli_driver_ros2.git
-    version: main
+    version: tpo/dockerization_for_demo_app
