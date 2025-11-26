@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Welcome to the Staubli Demo Launcher Setup"
+sleep 1
+
 # Default values
 DEFAULT_IP="192.168.0.254"
 STAUBLI_AUTOMATIC_MODE=false
@@ -44,9 +47,16 @@ if ! command -v docker compose &> /dev/null; then
     exit 1
 fi
 
+# Allow Docker to access X server
+xhost +local:docker
+
 # Start the services
 echo "Starting the demo with IP: $STAUBLI_ROBOT_IP, AUTO_MODE: $STAUBLI_AUTOMATIC_MODE, MOCKED: $STAUBLI_USE_MOCK_HARDWARE"
-zenity --warning --text="<span foreground='red' size='large'><b>WARNING!</b></span>\n\nThe robot will move in 5 seconds.\nDo not stay in robot workspace!\n\n<b>Starting the demo with:</b>\nIP: $STAUBLI_ROBOT_IP\nAutomatic Mode: $STAUBLI_AUTOMATIC_MODE\nMocked Hardware: $STAUBLI_USE_MOCK_HARDWARE" --title="Safety Warning - Starting Demo"
+
+# Show safety warning if not using mocked hardware
+if [ "$STAUBLI_USE_MOCK_HARDWARE" = false ]; then
+    zenity --warning --text="<span foreground='red' size='large'><b>WARNING!</b></span>\n\nThe robot will move in 5 seconds.\nDo not stay in robot workspace!\n\n<b>Starting the demo with:</b>\nIP: $STAUBLI_ROBOT_IP\nAutomatic Mode: $STAUBLI_AUTOMATIC_MODE\nMocked Hardware: $STAUBLI_USE_MOCK_HARDWARE" --title="Safety Warning - Starting Demo"
+fi
 
 # Remove any existing containers and start new ones
 

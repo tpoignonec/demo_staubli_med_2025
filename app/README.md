@@ -28,18 +28,31 @@ docker build -t staubli_jpo_demo:0.1.0 \
     demo_staubli_med_2025
 ```
 
-## Launch app
+### Install app
+
+```bash
+./demo_staubli_med_2025/app/install.sh
+
+# Should show
+$ ...
+$ Installation complete. ...
+```
+
+## Launch the app
+
+### Using the launcher
+
+Go to the Ubuntu app launcher and look for the demo and click on it.
+That's it.
+
+### Manually
 
 ```bash
 xhost +local:docker
 
 cd demo_staubli_med_2025/app
 
-# Check config (from ".env" file)
-docker compose config
-
-# Start the app
-docker compose up --remove-orphans
+./app.sh
 ```
 
 If you get an error like `"/staubli_jpo_demo" is already in use by container`:

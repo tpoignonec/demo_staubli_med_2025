@@ -176,7 +176,7 @@ private:
 
   bool execute_linear_move_to_pose(
     const geometry_msgs::msg::PoseStamped& target_pose,
-    double velocity_scaling=0.1)
+    double velocity_scaling = 0.1)
   {
     if (velocity_scaling <= 0.0 || velocity_scaling > 1.0) {
       RCLCPP_WARN(this->get_logger(),
