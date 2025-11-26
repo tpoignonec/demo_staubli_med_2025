@@ -21,6 +21,7 @@ RUN . /opt/ros/jazzy/setup.sh \
 
 # Ensure the ROS 2 workspace is sourced in every new shell
 RUN echo "source /ws/install/setup.bash" >> /root/.bashrc
+RUN echo "export RCUTILS_COLORIZED_OUTPUT=1" >> /root/.bashrc
 
 COPY .docker/entrypoint.sh /root/
 

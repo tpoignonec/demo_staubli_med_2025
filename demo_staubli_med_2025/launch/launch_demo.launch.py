@@ -4,8 +4,9 @@
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, PythonExpression
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -18,18 +19,25 @@ def generate_launch_description():
 
     declared_arguments.append(
         DeclareLaunchArgument(
+            "robot_ip",
+            default_value="192.168.0.254",
+            description="IP address of the robot.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
             "use_mock_hardware",
             default_value="true",
             description="Use mock hardware for robot control.",
             choices=["true", "false"],
         )
     )
-
     declared_arguments.append(
         DeclareLaunchArgument(
-            "robot_ip",
-            default_value="192.168.0.254",
-            description="IP address of the robot.",
+            "automatic_mode",
+            default_value="false",
+            description="Whether to launch the demo in automatic mode.",
+            choices=["true", "false"],
         )
     )
 
@@ -55,30 +63,39 @@ def generate_launch_description():
             )
         ),
         launch_arguments={
-            "gui": 'false',
+            "gui": PythonExpression(
+                ["'false' if '", LaunchConfiguration("automatic_mode"), "' == 'true' else 'true'"]
+            )
         }.items(),
     )
 
     launch_trajectory_planner = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution(
-                [FindPackageShare("demo_staubli_med_2025"), "launch", "trajectory_planner.launch.py"]
+                [
+                    FindPackageShare("demo_staubli_med_2025"),
+                    "launch",
+                    "trajectory_planner.launch.py",
+                ]
             )
         ),
         launch_arguments={
-            "loop_forever": 'true',
+            "loop_forever": "true",
         }.items(),
+        condition=IfCondition(LaunchConfiguration("automatic_mode")),
     )
 
-    rviz_config_file = PathJoinSubstitution(
+    # Launch RViz
+    rviz_config_auto_file = PathJoinSubstitution(
         [FindPackageShare("demo_staubli_med_2025"), "rviz", "moveit_auto.rviz"]
     )
-    rviz_node = Node(
+    rviz_node_auto = Node(
         package="rviz2",
         executable="rviz2",
         name="rviz2_moveit",
         output="log",
-        arguments=["-d", rviz_config_file],
+        arguments=["-d", rviz_config_auto_file],
+        condition=IfCondition(LaunchConfiguration("automatic_mode")),
     )
 
     return LaunchDescription(
@@ -87,6 +104,6 @@ def generate_launch_description():
             launch_robot_control,
             launch_moveit,
             launch_trajectory_planner,
-            rviz_node,
+            rviz_node_auto,
         ]
     )

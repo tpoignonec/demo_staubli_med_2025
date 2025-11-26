@@ -5,9 +5,10 @@
 from pathlib import Path
 
 from launch import LaunchDescription
-from launch.actions import RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler
+from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit
-from launch.substitutions import PathJoinSubstitution
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -17,6 +18,15 @@ from moveit_configs_utils import MoveItConfigsBuilder
 
 def generate_launch_description():
     declared_arguments = []
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "gui",
+            default_value="true",
+            description="Launch Rviz if true.",
+            choices=["true", "false"],
+        )
+    )
 
     moveit_config = (
         MoveItConfigsBuilder(robot_name="staubli", package_name="demo_staubli_med_2025")
@@ -53,6 +63,7 @@ def generate_launch_description():
             moveit_config.planning_pipelines,
             moveit_config.joint_limits,
         ],
+        condition=IfCondition(LaunchConfiguration("gui")),
     )
 
     # Wait for robot description and joint states topics
