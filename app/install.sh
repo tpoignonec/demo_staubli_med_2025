@@ -1,9 +1,28 @@
 #!/bin/bash
 
-echo "Installing Staubli Demo Launcher..."
-
 # Get the directory of the current script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Check for Docker
+if ! command -v docker &> /dev/null; then
+    zenity --error --text="Docker is not installed. Please install Docker first."
+    exit 1
+fi
+
+echo "Building the Docker images for Staubli Demo Launcher..."
+
+# Check for Staubli Driver ROS2 image (error if not found)
+if ! docker image inspect staubli_driver_ros2:0.1.0 > /dev/null 2>&1; then
+    echo "Error: Docker image 'staubli_driver_ros2:0.1.0' not found. Please build it first."
+    exit 1
+fi
+
+# Build the Staubli Demo Launcher image
+docker build -t staubli_jpo_demo:latest \
+    -f "$SCRIPT_DIR/../.docker/Dockerfile" \
+    "$SCRIPT_DIR/.."
+
+echo "Installing Staubli Demo Launcher..."
 
 # Set the application directory
 APP_DIR="$SCRIPT_DIR"

@@ -1,37 +1,36 @@
 # Demo app for Staubli JPO
 
-## Build docker image
+## Install app
 
 1) Install and setup docker & docker-compose
 
 - Follow instructions at https://docs.docker.com/engine/install/ubuntu/ to install docker
 - Don't forget the post-installation steps (see [here](https://docs.docker.com/engine/install/linux-postinstall/))
 
-2) Build Staubli driver base image:
+2) Build or load the Staubli ROS2 driver base image:
+
 ```bash
 git clone https://github.com/tpoignonec/staubli_driver_ros2.git
 
 git checkout tpo/dockerization_for_demo_app
-
-# Build staubli_driver docker image
-docker build -t staubli_driver_ros2:jazzy staubli_driver_ros2
 ```
 
-3) Build demo app image:
-```bash
-# Clone all
-git clone https://github.com/tpoignonec/demo_staubli_med_2025.git
+Follow instructions at `staubli_driver_ros2/.docker/README.md`.
 
-# Build demo container from staubli_driver_ros2:jazzy
-docker build -t staubli_jpo_demo:0.1.0 \
-    -f demo_staubli_med_2025/.docker/Dockerfile \
-    demo_staubli_med_2025
+You should get the image `staubli_driver_ros2:0.1.0`.
+If your are on a different machine, export the image (`docker save ...`),transfer it, and load it:
+
+```bash
+docker load < staubli_driver_ros2:0.1.0.tar.gz
 ```
 
-### Install app
+3) Install the Staubli JPO demo app
 
 ```bash
-./demo_staubli_med_2025/app/install.sh
+cd demo_staubli_med_2025
+chmod +x ./app/install.sh
+
+./app/install.sh
 
 # Should show
 $ ...
@@ -48,11 +47,9 @@ That's it.
 ### Manually
 
 ```bash
-xhost +local:docker
+cd demo_staubli_med_2025
 
-cd demo_staubli_med_2025/app
-
-./app.sh
+./app/app.sh
 ```
 
 If you get an error like `"/staubli_jpo_demo" is already in use by container`:

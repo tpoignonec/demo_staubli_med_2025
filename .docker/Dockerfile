@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # Build from parent directory with: docker build -t staubli_jpo_demo:0.1.0 -f .docker/Dockerfile .
 
-FROM staubli_driver_ros2:jazzy
+FROM staubli_driver_ros2:0.1.0
 
 # Create workspace
 WORKDIR /ws
