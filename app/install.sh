@@ -3,6 +3,13 @@
 # Get the directory of the current script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Source .env from script directory if it exists
+if [ -f "$SCRIPT_DIR/.env" ]; then
+    set -a
+    source "$SCRIPT_DIR/.env"
+    set +a
+fi
+
 # Check for Docker
 if ! command -v docker &> /dev/null; then
     zenity --error --text="Docker is not installed. Please install Docker first."
@@ -12,13 +19,13 @@ fi
 echo "Building the Docker images for Staubli Demo Launcher..."
 
 # Check for Staubli Driver ROS2 image (error if not found)
-if ! docker image inspect staubli_driver_ros2:0.1.0 > /dev/null 2>&1; then
-    echo "Error: Docker image 'staubli_driver_ros2:0.1.0' not found. Please build it first."
+if ! docker image inspect staubli_driver_ros2:${STAUBLI_DRIVER_VERSION} > /dev/null 2>&1; then
+    echo "Error: Docker image 'staubli_driver_ros2:${STAUBLI_DRIVER_VERSION}' not found. Please build or load it first."
     exit 1
 fi
 
 # Build the Staubli Demo Launcher image
-docker build -t staubli_jpo_demo:latest \
+docker build -t staubli_jpo_demo:${DEMO_VERSION} \
     -f "$SCRIPT_DIR/../.docker/Dockerfile" \
     "$SCRIPT_DIR/.."
 
