@@ -1,0 +1,17 @@
+services:
+  staubli_demo_app:
+    container_name: staubli_jpo_demo
+    image: staubli_jpo_demo:0.1.0
+    network_mode: host
+    ipc: host
+    privileged: true
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${HOME}/.Xauthority:/root/.Xauthority:ro
+    command: >
+      ros2 launch demo_staubli_med_2025 launch_demo.launch.py
+        robot_ip:=${STAUBLI_ROBOT_IP:-192.168.0.254}
+        automatic_mode:=${STAUBLI_AUTOMATIC_MODE:-false}
+        use_mock_hardware:=${STAUBLI_USE_MOCK_HARDWARE:-false}

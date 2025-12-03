@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <xacro:macro name="medical_trolley" params="parent *origin">
+
+        <!-- Add trolley base link -->
+        <link name="trolley_base_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://demo_staubli_med_2025/meshes/visual/medical_trolley.dae"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://demo_staubli_med_2025/meshes/collision/medical_trolley.stl"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="trolley_base_joint" type="fixed">
+            <xacro:insert_block name="origin" />
+            <parent link="${parent}" />
+            <child link="trolley_base_link" />
+        </joint>
+
+        <link name="trolley_tmp_link"/>
+        <link name="trolley_robot_interface_link"/>
+
+        <!-- Robot interface -->
+        <joint name="trolley_tmp_joint" type="fixed">
+            <origin xyz="0 -0.10036 0.89868" rpy="${20*pi/180} 0 0"/>
+            <parent link="trolley_base_link" />
+            <child link="trolley_tmp_link" />
+        </joint>
+        <!-- Fix final robot orientation -->
+        <joint name="trolley_robot_interface_joint" type="fixed">
+            <origin xyz="0 0 0" rpy="0 0 ${-90*pi/180}"/>
+            <parent link="trolley_tmp_link" />
+            <child link="trolley_robot_interface_link" />
+        </joint>
+
+    </xacro:macro>
+</robot>

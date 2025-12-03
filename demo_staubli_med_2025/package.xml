@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>demo_staubli_med_2025</name>
+  <version>0.0.1</version>
+  <description>
+    Minimalist demo for the Staubli driver, used during the 2025 Staubli JPO days with the TX2-60L medical robot.
+  </description>
+  <maintainer email="tpoignonec@unistra.fr">Thibault Poignonec</maintainer>
+  <license>BSD 3-Clause License</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>tf2_geometry_msgs</exec_depend>
+  <exec_depend>cv_bridge</exec_depend>
+  <exec_depend>python3-opencv</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
+
+  <!-- For launch -->
+  <exec_depend>astra_camera</exec_depend>
+  <exec_depend>librealsense2</exec_depend>
+  <exec_depend>realsense2_camera</exec_depend>
+
+  <exec_depend>staubli_robot_driver</exec_depend>
+  <exec_depend>staubli_robot_description</exec_depend>
+  <exec_depend>staubli_moveit_config</exec_depend>
+
+  <exec_depend>slider_publisher</exec_depend>
+  <exec_depend>moveit_ros_move_group</exec_depend>
+  <exec_depend>moveit_ros_planning_interface</exec_depend>
+  <exec_depend>moveit_msgs</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

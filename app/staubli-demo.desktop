@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Staubli ROS2 Demo
+Comment=Launch the Staubli Robot ROS2 Demo
+Exec=/bin/bash -c "cd APP_DIR && ./app.sh"
+Icon=APP_DIR/icon_staubli-demo.png
+Terminal=true
+Type=Application
+Categories=Utility;
