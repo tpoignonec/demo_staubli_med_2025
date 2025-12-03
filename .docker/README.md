@@ -12,7 +12,7 @@ git clone https://github.com/tpoignonec/staubli_driver_ros2.git
 git checkout tpo/dockerization_for_demo_app
 
 # Build staubli_driver docker image
-docker build -t staubli_driver_ros2:jazzy staubli_driver_ros2
+docker build -t staubli_driver_ros2:0.1.0 staubli_driver_ros2
 ```
 
 3) Build demo app image:
