@@ -3,8 +3,17 @@
 echo "Welcome to the Staubli Demo Launcher Setup"
 sleep 1
 
+# Always resolve script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)"
+
+# Source .env from script directory if it exists
+if [ -f "$SCRIPT_DIR/.env" ]; then
+    set -a
+    source "$SCRIPT_DIR/.env"
+    set +a
+fi
+
 # Default values
-DEFAULT_IP="192.168.0.254"
 STAUBLI_AUTOMATIC_MODE=false
 STAUBLI_USE_MOCK_HARDWARE=false
 
@@ -62,6 +71,7 @@ fi
 
 sleep 3
 docker rm -f staubli_jpo_demo > /dev/null 2>&1
+
 STAUBLI_ROBOT_IP="$STAUBLI_ROBOT_IP" \
 STAUBLI_AUTOMATIC_MODE="$STAUBLI_AUTOMATIC_MODE" \
 STAUBLI_USE_MOCK_HARDWARE="$STAUBLI_USE_MOCK_HARDWARE" \
