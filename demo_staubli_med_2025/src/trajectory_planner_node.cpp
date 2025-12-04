@@ -74,7 +74,7 @@ public:
 
     // Convert RPY to quaternion
     tf2::Quaternion q;
-    q.setRPY(M_PI, 0.0, M_PI/2.0);  // 180°, 0°, 90°
+    q.setRPY(0.0, M_PI/2.0, 0.0);  // 180°, 0°, 90°
     start_pose_.pose.orientation = tf2::toMsg(q);
 
     RCLCPP_INFO(this->get_logger(), "Start pose defined: x=%.3f, y=%.3f, z=%.3f",
@@ -237,7 +237,7 @@ private:
       "\nTASK 2: Executing Cartesian rotations"
       "\n============================================================\n");
 
-    // Define rotation waypoints (rotating around Z-axis)
+    // Define rotation waypoints (in radians)
     std::vector<double> rotation_angles = {
       0.0,
       0.9 * M_PI / 2,
@@ -265,7 +265,7 @@ private:
       tf2::fromMsg(start_pose_.pose.orientation, q_start);
 
       tf2::Quaternion q_rotation;
-      q_rotation.setRPY(0.0, angle, 0.0);  // Pure Y-axis rotation
+      q_rotation.setRPY(0.0, 0.0, angle);  // Pure X-axis rotation
 
       // Combine rotations: first apply start pose orientation, then rotate around its Z-axis
       tf2::Quaternion q_result = q_start * q_rotation;
