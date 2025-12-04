@@ -15,7 +15,7 @@ fi
 
 # Default values
 STAUBLI_AUTOMATIC_MODE=false
-STAUBLI_USE_MOCK_HARDWARE=false
+STAUBLI_USE_MOCK_HARDWARE=true
 
 # Prompt for IP address using Zenity
 STAUBLI_ROBOT_IP=$(zenity --entry \
@@ -34,8 +34,8 @@ if zenity --question --title="Staubli Demo Setup" --text="Enable automatic mode?
 fi
 
 # Prompt for mocked hardware
-if zenity --question --title="Staubli Demo Setup" --text="Use mocked hardware?"; then
-    STAUBLI_USE_MOCK_HARDWARE=true
+if zenity --question --title="Staubli Demo Setup" --text="Use real hardware?"; then
+    STAUBLI_USE_MOCK_HARDWARE=false
 fi
 
 # Validate IP format
