@@ -5,6 +5,7 @@ services:
     network_mode: host
     ipc: host
     privileged: true
+    init: true
     environment:
       - DISPLAY=${DISPLAY:-:0}
     env_file: ".env"

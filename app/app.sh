@@ -1,11 +1,18 @@
 #!/bin/bash
 
-echo "Welcome to the Staubli Demo Launcher Setup"
-sleep 1
+# Always resolve script directory first
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)"
 
-# Default values
-STAUBLI_AUTOMATIC_MODE=false
-STAUBLI_USE_MOCK_HARDWARE=true
+# Cleanup function to stop docker compose on exit
+cleanup() {
+    echo "Stopping Docker containers..."
+    cd "$SCRIPT_DIR" && docker compose down 2>/dev/null
+    sleep 2
+    exit
+}
+
+# Trap EXIT, INT (Ctrl+C), TERM, and HUP (terminal close) signals
+trap cleanup EXIT INT TERM HUP
 
 # Function to check if previous command was aborted
 check_abort() {
@@ -14,8 +21,12 @@ check_abort() {
     fi
 }
 
-# Always resolve script directory
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)"
+echo "Welcome to the Staubli Demo Launcher Setup"
+sleep 1
+
+# Default values
+STAUBLI_AUTOMATIC_MODE=false
+STAUBLI_USE_MOCK_HARDWARE=true
 
 # Source .env from script directory if it exists
 if [ -f "$SCRIPT_DIR/.env" ]; then
@@ -117,7 +128,15 @@ docker rm -f staubli_jpo_demo:${DEMO_VERSION} > /dev/null 2>&1
 # Wait 3s before starting application container
 sleep 3
 
+cd "$SCRIPT_DIR"
+
+# Run docker compose and capture its PID
 STAUBLI_ROBOT_IP="$STAUBLI_ROBOT_IP" \
 STAUBLI_AUTOMATIC_MODE="$STAUBLI_AUTOMATIC_MODE" \
 STAUBLI_USE_MOCK_HARDWARE="$STAUBLI_USE_MOCK_HARDWARE" \
-docker compose up --remove-orphans
+docker compose up --remove-orphans &
+
+COMPOSE_PID=$!
+
+# Wait for docker compose process
+wait $COMPOSE_PID
