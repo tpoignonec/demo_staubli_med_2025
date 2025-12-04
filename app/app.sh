@@ -67,7 +67,7 @@ else
         echo "Uploading VAL3 program to the robot at IP: $STAUBLI_ROBOT_IP"
         # Call the upload script
         docker run --rm staubli_jpo_demo:${DEMO_VERSION} bash \
-            -c "ros2 run staubli_robot_driver upload_val3_server.py --ros-args -p robot_ip:=${STAUBLI_ROBOT_IP}"
+            -c "ros2 run staubli_robot_driver upload_val3_server.py --ros-args -p robot_ip:=${STAUBLI_ROBOT_IP} -p upload_sio_config:=false"
         SHOULD_CHECK_UPLOAD_VAL3_OUTPUT=true
     fi
 
