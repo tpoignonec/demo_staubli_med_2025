@@ -59,6 +59,26 @@ fi
 # Allow Docker to access X server
 xhost +local:docker
 
+# Ask if the VAL3 program should be uploaded
+SHOULD_CHECK_UPLOAD_VAL3_OUTPUT=false
+if zenity --question --title="Staubli Demo Setup" --text="Do you want to upload the VAL3 program to the robot?"; then
+    echo "Uploading VAL3 program to the robot at IP: $STAUBLI_ROBOT_IP"
+    # Call the upload script
+    docker run --rm staubli_jpo_demo:${DEMO_VERSION} bash \
+        -c "ros2 run staubli_robot_driver upload_val3_server.py --ros-args -p robot_ip:=${STAUBLI_ROBOT_IP}"
+    SHOULD_CHECK_UPLOAD_VAL3_OUTPUT=true
+fi
+
+if [ "$SHOULD_CHECK_UPLOAD_VAL3_OUTPUT" = true ]; then
+    if zenity --question --text="Please check the terminal output of the upload process to ensure the VAL3 program was uploaded successfully. Press no to abort..."; then
+        echo "User confirmed VAL3 upload check."
+    else
+        echo "User indicated VAL3 upload issue. Exiting."
+        sleep 2
+        exit 1
+    fi
+fi
+
 # Start the services
 echo "Starting the demo with IP: $STAUBLI_ROBOT_IP, AUTO_MODE: $STAUBLI_AUTOMATIC_MODE, MOCKED: $STAUBLI_USE_MOCK_HARDWARE"
 
