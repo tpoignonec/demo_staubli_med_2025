@@ -70,7 +70,7 @@ fi
 # Remove any existing containers and start new ones
 
 sleep 3
-docker rm -f staubli_jpo_demo > /dev/null 2>&1
+docker rm -f staubli_jpo_demo:${DEMO_VERSION} > /dev/null 2>&1
 
 STAUBLI_ROBOT_IP="$STAUBLI_ROBOT_IP" \
 STAUBLI_AUTOMATIC_MODE="$STAUBLI_AUTOMATIC_MODE" \
