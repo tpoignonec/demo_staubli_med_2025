@@ -7,13 +7,13 @@
         <!-- Add trolley base link -->
         <link name="needle_holder_link">
             <visual>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <origin xyz="0 0 0" rpy="0 0 ${90*pi/180}"/>
                 <geometry>
                     <mesh filename="package://demo_staubli_med_2025/meshes/visual/needle_holder.dae"/>
                 </geometry>
             </visual>
             <collision>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <origin xyz="0 0 0" rpy="0 0 ${90*pi/180}"/>
                 <geometry>
                     <mesh filename="package://demo_staubli_med_2025/meshes/collision/needle_holder.stl"/>
                 </geometry>
@@ -30,7 +30,7 @@
 
         <link name="needle_link">
             <visual>
-                <origin xyz="0 0 ${-needle_length/2}" rpy="0 0 0"/>
+                <origin xyz="${-needle_length/2} 0 0" rpy="0 ${90*pi/180} 0"/>
                 <geometry>
                     <cylinder radius="0.0025" length="${needle_length}"/>
                 </geometry>
@@ -62,7 +62,7 @@
 
         <joint name="needle_visual_joint" type="fixed">
             <!-- % FT sensor : x="59.36" y="0.83" z="157.165" rx="2.25775e-14" ry="65" rz="90" -->
-            <origin xyz="0 ${-needle_length} 0.136" rpy="${90*pi/180} 0 0"/>
+            <origin xyz="${needle_length} 0 0.136" rpy="0 0 0"/>
             <parent link="needle_holder_link" />
             <child link="needle_link" />
         </joint>
