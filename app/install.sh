@@ -27,6 +27,7 @@ fi
 # Build the Staubli Demo Launcher image
 docker build -t staubli_jpo_demo:${DEMO_VERSION} \
     -f "$SCRIPT_DIR/../.docker/Dockerfile" \
+    --build-arg STAUBLI_DRIVER_VERSION="${STAUBLI_DRIVER_VERSION}" \
     "$SCRIPT_DIR/.."
 
 echo "Installing Staubli Demo Launcher..."

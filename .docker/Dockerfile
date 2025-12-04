@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1
-# Build from parent directory with: docker build -t staubli_jpo_demo:0.1.0 -f .docker/Dockerfile .
+# Build with: docker build --build-arg STAUBLI_DRIVER_VERSION=0.1.0 -t staubli_jpo_demo:0.1.0 -f .docker/Dockerfile .
 
-FROM staubli_driver_ros2:0.1.0
+ARG STAUBLI_DRIVER_VERSION=latest
+FROM staubli_driver_ros2:${STAUBLI_DRIVER_VERSION}
 
 # Create workspace
 WORKDIR /ws
@@ -17,7 +18,7 @@ RUN apt-get update && \
 RUN . /opt/ros/jazzy/setup.sh \
     && . /opt/ros/icube/setup.sh \
     && colcon build \
-    --cmake-args -DCMAKE_BUILD_TYPE=Release
+        --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 # Ensure the ROS 2 workspace is sourced in every new shell
 RUN echo "source /ws/install/setup.bash" >> /root/.bashrc

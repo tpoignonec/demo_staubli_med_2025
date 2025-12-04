@@ -3,8 +3,14 @@
 # Author: Thibault Poignonec <tpoignonec@unistra.fr>
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    RegisterEventHandler,
+    Shutdown
+)
 from launch.conditions import IfCondition
+from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, PythonExpression
 
@@ -98,6 +104,15 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration("automatic_mode")),
     )
 
+    # Shutdown everything when rviz_node_auto exits
+    shutdown_on_rviz_exit = RegisterEventHandler(
+        OnProcessExit(
+            target_action=rviz_node_auto,
+            on_exit=[Shutdown()],
+        ),
+        condition=IfCondition(LaunchConfiguration("automatic_mode")),
+    )
+
     return LaunchDescription(
         declared_arguments
         + [
@@ -105,5 +120,6 @@ def generate_launch_description():
             launch_moveit,
             launch_trajectory_planner,
             rviz_node_auto,
+            shutdown_on_rviz_exit,
         ]
     )
