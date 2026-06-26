@@ -8,7 +8,7 @@ Minimalist demo for the Staubli driver, used during the 2025 Staubli JPO days wi
 2. Install the demo app
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/tpoignonec/demo_staubli_med_2025/tpo/add_install_one_liner/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/tpoignonec/demo_staubli_med_2025/main/install.sh | bash
 ```
 
 ## Manual local installation
