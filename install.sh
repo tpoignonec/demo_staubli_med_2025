@@ -3,7 +3,7 @@
 # Bootstrap installer for the Staubli MED 2025 demo.
 #
 # Usage:
-#   curl -sSL https://raw.githubusercontent.com/tpoignonec/demo_staubli_med_2025/main/install.bash | bash
+#   curl -sSL https://raw.githubusercontent.com/tpoignonec/demo_staubli_med_2025/main/install.sh | bash
 #
 set -euo pipefail
 
