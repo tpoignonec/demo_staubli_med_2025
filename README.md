@@ -8,11 +8,20 @@ Minimalist demo for the Staubli driver, used during the 2025 Staubli JPO days wi
 2. Install the demo app
 
 ```bash
-git clone https://github.com/tpoignonec/demo_staubli_med_2025.git
-
-cd demo_staubli_med_2025
-./app/install.sh
+curl -sSL https://raw.githubusercontent.com/tpoignonec/demo_staubli_med_2025/main/install.sh | bash
 ```
+
+> [!NOTE]
+> To uninstall the demo app (removes the launcher and Docker images):
+>
+> ```bash
+> # Remove app launcher
+> rm -f ~/.local/share/applications/staubli-demo.desktop
+>
+> # Remove docker images
+> docker rmi $(docker images 'ghcr.io/icube-robotics/staubli_driver_ros2' -q) 2>/dev/null
+> docker rmi $(docker images 'staubli_driver_ros2' -q) 2>/dev/null
+> ```
 
 ## Manual local installation
 
