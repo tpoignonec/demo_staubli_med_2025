@@ -7,9 +7,12 @@
 #
 set -euo pipefail
 
+# Persistent install location. The app launcher created by app/install.sh
+# bakes this path into the desktop entry, so it must survive reboots
+# (i.e. not /tmp, which is cleared on reboot).
 REPO_URL="https://github.com/tpoignonec/demo_staubli_med_2025.git"
 BRANCH="${DEMO_BRANCH:-main}"
-CLONE_DIR="/tmp/demo_staubli_med_2025"
+CLONE_DIR="${DEMO_INSTALL_DIR:-$HOME/.local/share/demo_staubli_med_2025}"
 
 # Check for git
 if ! command -v git &> /dev/null; then
@@ -17,7 +20,7 @@ if ! command -v git &> /dev/null; then
     exit 1
 fi
 
-# Fresh clone in /tmp
+# Fresh clone
 if [ -d "$CLONE_DIR" ]; then
     echo "Removing previous clone at $CLONE_DIR..."
     rm -rf "$CLONE_DIR"

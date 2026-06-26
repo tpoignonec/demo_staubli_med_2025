@@ -11,12 +11,22 @@ Minimalist demo for the Staubli driver, used during the 2025 Staubli JPO days wi
 curl -sSL https://raw.githubusercontent.com/tpoignonec/demo_staubli_med_2025/main/install.sh | bash
 ```
 
+3. Change robot IP if needed:
+
+```bash
+nano ~/.local/share/demo_staubli_med_2025/app/.env
+
+# Change IP address
+# Save and exit
+```
+
 > [!NOTE]
 > To uninstall the demo app (removes the launcher and Docker images):
 >
 > ```bash
-> # Remove app launcher
+> # Remove app launcher and cloned repo
 > rm -f ~/.local/share/applications/staubli-demo.desktop
+> rm -rf ~/.local/share/demo_staubli_med_2025
 >
 > # Remove docker images
 > docker rmi $(docker images 'ghcr.io/icube-robotics/staubli_driver_ros2' -q) 2>/dev/null
