@@ -2,6 +2,18 @@
 
 Minimalist demo for the Staubli driver, used during the 2025 Staubli JPO days with the TX2-60L medical robot
 
+## Containerized app
+
+1. Install `docker` and `docker-compose`
+2. Install the demo app
+
+```bash
+git clone https://github.com/tpoignonec/demo_staubli_med_2025.git
+
+cd demo_staubli_med_2025
+./app/install.sh
+```
+
 ## Manual local installation
 
 ```bash

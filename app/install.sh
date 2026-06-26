@@ -18,15 +18,19 @@ fi
 
 echo "Building the Docker images for Staubli Demo Launcher..."
 
-# Check for Staubli Driver ROS2 image (error if not found)
-if ! docker image inspect staubli_driver_ros2:${STAUBLI_DRIVER_VERSION} > /dev/null 2>&1; then
-    echo "Error: Docker image 'staubli_driver_ros2:${STAUBLI_DRIVER_VERSION}' not found. Please build or load it first."
-    exit 1
+# Check for Staubli Driver ROS2 image, pull if not available
+if ! docker image inspect ${STAUBLI_DRIVER_IMAGE}:${STAUBLI_DRIVER_VERSION} > /dev/null 2>&1; then
+    echo "Staubli Driver ROS2 image not found. Pulling from registry..."
+    if ! docker pull ${STAUBLI_DRIVER_IMAGE}:${STAUBLI_DRIVER_VERSION}; then
+        echo "Error: Failed to pull Docker image '${STAUBLI_DRIVER_IMAGE}:${STAUBLI_DRIVER_VERSION}'. Please check your network connection and try again."
+        exit 1
+    fi
 fi
 
 # Build the Staubli Demo Launcher image
 docker build -t staubli_jpo_demo:${DEMO_VERSION} \
     -f "$SCRIPT_DIR/../.docker/Dockerfile" \
+    --build-arg STAUBLI_DRIVER_IMAGE="${STAUBLI_DRIVER_IMAGE}" \
     --build-arg STAUBLI_DRIVER_VERSION="${STAUBLI_DRIVER_VERSION}" \
     "$SCRIPT_DIR/.."
 

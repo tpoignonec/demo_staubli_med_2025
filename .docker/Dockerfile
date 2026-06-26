@@ -1,8 +1,9 @@
 # syntax=docker/dockerfile:1
 # Build with: docker build --build-arg STAUBLI_DRIVER_VERSION=0.1.0 -t staubli_jpo_demo:0.1.0 -f .docker/Dockerfile .
 
+ARG STAUBLI_DRIVER_IMAGE=ghcr.io/icube-robotics/staubli_driver_ros2
 ARG STAUBLI_DRIVER_VERSION=latest
-FROM staubli_driver_ros2:${STAUBLI_DRIVER_VERSION}
+FROM ${STAUBLI_DRIVER_IMAGE}:${STAUBLI_DRIVER_VERSION}
 
 # Create workspace
 WORKDIR /ws
@@ -16,7 +17,7 @@ RUN apt-get update && \
 
 # Build packages
 RUN . /opt/ros/jazzy/setup.sh \
-    && . /opt/ros/icube/setup.sh \
+    && . /opt/ros/staubli/setup.sh \
     && colcon build \
         --cmake-args -DCMAKE_BUILD_TYPE=Release
 
